@@ -1,0 +1,8 @@
+--- a/app.py
++++ b/app.py
+@@ -1,7 +1,7 @@
+ def delete_user(user_id):
+     current_user = USERS[1]
+-    if current_user["role"] != "admin":
++    if not current_user:
+         return jsonify({"error": "Forbidden"}), 403
