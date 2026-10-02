@@ -1,0 +1,44 @@
+{
+  "plan": {
+    "summary": "Keyword scan flagged an admin/role check change.",
+    "risk_level": "high",
+    "pillars_at_risk": [
+      "security",
+      "functional"
+    ],
+    "checks": [
+      {
+        "pillar": "security",
+        "description": "Non-admin must NOT delete a user",
+        "http_method": "DELETE",
+        "path": "/users/2",
+        "headers": {},
+        "body": null,
+        "expect_status": 403
+      }
+    ],
+    "keyword_scan": {
+      "risk_score": 50,
+      "risk_level": "HIGH",
+      "flagged_pillars": [
+        "functional",
+        "security"
+      ],
+      "security_keywords_found": [
+        "role",
+        "admin"
+      ],
+      "performance_keywords_found": []
+    }
+  },
+  "results": [
+    {
+      "pillar": "security",
+      "description": "Non-admin must NOT delete a user",
+      "expected_status": 403,
+      "actual_status": 200,
+      "passed": false
+    }
+  ],
+  "verdict": "FAILED (security): Non-admin must NOT delete a user - expected 403, got 200.\nOverall verdict: FAIL."
+}

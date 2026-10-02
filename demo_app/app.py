@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
@@ -8,6 +8,14 @@ USERS = {
 }
 
 
+def get_current_user():
+    """Reads which user is calling from a header. No header = not logged in."""
+    user_id = request.headers.get("X-User-Id")
+    if user_id is None:
+        return None
+    return USERS.get(int(user_id))
+
+
 @app.get("/")
 def home():
     return jsonify({"application": "BlastShield Demo", "status": "running"})
@@ -15,8 +23,8 @@ def home():
 
 @app.delete("/users/<int:user_id>")
 def delete_user(user_id):
-    current_user = USERS[1]
-    if current_user["role"] != "admin":
+    current_user = get_current_user()
+    if not current_user or current_user["role"] != "admin":
         return jsonify({"error": "Forbidden"}), 403
     if user_id not in USERS:
         return jsonify({"error": "User not found"}), 404
